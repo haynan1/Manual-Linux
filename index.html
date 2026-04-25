@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual Linux</title>
+    <meta
+      name="description"
+      content="Manual Linux em formato web, organizado em uma sequência cronológica de aprendizado."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css"
+    />
+    <link rel="stylesheet" href="style.css?v=6" />
+    <link rel="icon" type="image/svg+xml" href="assets/tux.svg" />
+    <link rel="apple-touch-icon" href="assets/tux.svg" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="header-inner">
+          <a class="brand" href="#top" aria-label="Ir para o topo">
+            <span class="brand-mark" aria-hidden="true">
+              <img src="assets/tux.svg" alt="" />
+            </span>
+            <span class="brand-copy">
+              <strong id="project-title">Manual Linux</strong>
+              <span id="project-subtitle">Terminal, comandos e sistema</span>
+            </span>
+          </a>
+
+          <nav class="header-actions" aria-label="Ações rápidas">
+            <a href="#manual">Manual</a>
+            <a href="#toc">Índice</a>
+            <button id="theme-toggle" type="button" aria-label="Alternar tema" aria-pressed="false">
+              Escuro
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-inner">
+            <div class="hero-copy">
+              <p class="eyebrow">Guia de estudo</p>
+              <h1 id="hero-title">Manual Linux</h1>
+              <p id="hero-description">
+                Um manual organizado para aprender terminal em ordem: fundamentos, navegação,
+                arquivos, pacotes, personalização, monitoramento e IA local.
+              </p>
+            </div>
+
+            <div class="hero-side">
+              <figure class="tux-card">
+                <img src="assets/tux.svg" alt="Pinguim Tux, mascote do Linux" />
+              </figure>
+
+              <div class="hero-panel" aria-label="Resumo do manual">
+                <div>
+                  <span class="metric-value" id="section-count">0</span>
+                  <span class="metric-label">módulos</span>
+                </div>
+                <div>
+                  <span class="metric-value" id="command-count">0</span>
+                  <span class="metric-label">blocos de comando</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="manual-layout" id="manual">
+          <aside class="sidebar" aria-label="Navegação do manual">
+            <div class="sidebar-panel">
+              <label class="search-label" for="manual-search">Buscar no manual</label>
+              <input
+                id="manual-search"
+                class="search-input"
+                type="search"
+                placeholder="Ex.: apt, cd, alias..."
+                autocomplete="off"
+              />
+
+              <div class="toc-header">
+                <h2 id="toc">Índice</h2>
+                <button id="clear-search" type="button" hidden>Limpar</button>
+              </div>
+              <nav id="toc-list" class="toc-list" aria-label="Seções do README"></nav>
+            </div>
+          </aside>
+
+          <article class="content-panel">
+            <div id="status" class="status" role="status" aria-live="polite">
+              Carregando README...
+            </div>
+            <div id="content" class="markdown-body" hidden></div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.12/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="script.js?v=6"></script>
+  </body>
+</html>
