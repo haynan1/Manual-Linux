@@ -233,9 +233,7 @@ function observeActiveSections() {
 }
 
 function updateMetrics(markdown) {
-  const moduleCount = (markdown.match(/^##\s+/gm) || []).filter(
-    (heading) => normalizeSearch(heading.replace(/^##\s+/, "")) !== "sumario"
-  ).length;
+  const moduleCount = headingRecords.filter((record) => record.depth === 2).length;
   const codeCount = (markdown.match(/^```/gm) || []).length / 2;
 
   sectionCountEl.textContent = String(moduleCount);
