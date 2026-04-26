@@ -175,6 +175,10 @@ samp {
   gap: 0.5rem;
 }
 
+.header-actions a[href="#toc"] {
+  display: none;
+}
+
 .header-actions a,
 .header-actions button,
 .toc-header button,
@@ -321,6 +325,7 @@ samp {
   grid-template-columns: 19rem minmax(0, 1fr);
   gap: 1rem;
   align-items: start;
+  scroll-margin-top: calc(var(--header-height) + 1rem);
 }
 
 .sidebar {
@@ -415,6 +420,15 @@ samp {
   color: var(--text-soft);
   font-size: 0.88rem;
   line-height: 1.35;
+}
+
+.toc-list a.toc-depth-3 {
+  margin-left: 0.72rem;
+  padding-top: 0.42rem;
+  padding-bottom: 0.42rem;
+  border-left: 2px solid var(--border);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.82rem;
 }
 
 .toc-list a:hover {
@@ -672,6 +686,11 @@ samp {
 
   .sidebar-panel {
     max-height: none;
+    display: none;
+  }
+
+  body.toc-open .sidebar-panel {
+    display: block;
   }
 }
 

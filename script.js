@@ -5,6 +5,7 @@ const projectSubtitleEl = document.getElementById("project-subtitle");
 const heroTitleEl = document.getElementById("hero-title");
 const heroDescriptionEl = document.getElementById("hero-description");
 const themeToggleEl = document.getElementById("theme-toggle");
+const tocToggleEl = document.getElementById("toc-toggle");
 const tocListEl = document.getElementById("toc-list");
 const searchInputEl = document.getElementById("manual-search");
 const clearSearchEl = document.getElementById("clear-search");
@@ -193,12 +194,13 @@ function buildToc() {
   tocListEl.innerHTML = "";
 
   headingRecords
-    .filter((record) => record.depth === 2)
+    .filter((record) => record.depth === 2 || record.depth === 3)
     .forEach((record) => {
       const link = document.createElement("a");
       link.href = `#${record.id}`;
       link.textContent = record.title;
       link.dataset.target = record.id;
+      link.className = `toc-depth-${record.depth}`;
       tocListEl.appendChild(link);
     });
 }
@@ -212,7 +214,7 @@ function setActiveTocLink(id) {
 function observeActiveSections() {
   if (activeObserver) activeObserver.disconnect();
 
-  const sections = headingRecords.filter((record) => record.depth === 2);
+  const sections = headingRecords.filter((record) => record.depth === 2 || record.depth === 3);
   activeObserver = new IntersectionObserver(
     (entries) => {
       const visible = entries
@@ -261,10 +263,44 @@ function getSectionBlocks() {
 
     return {
       heading,
+      headingIds: nodes
+        .filter((item) => /^H[23]$/.test(item.tagName))
+        .map((item) => item.id),
       nodes,
       text: normalizeSearch(nodes.map((item) => item.textContent).join(" ")),
     };
   });
+}
+
+function isCompactToc() {
+  return window.matchMedia("(max-width: 980px)").matches;
+}
+
+function setTocOpen(isOpen) {
+  document.body.classList.toggle("toc-open", isOpen);
+  tocToggleEl.setAttribute("aria-expanded", String(isOpen));
+}
+
+function focusTocPanel() {
+  searchInputEl.focus({ preventScroll: true });
+}
+
+function handleTocToggle() {
+  if (isCompactToc()) {
+    const willOpen = !document.body.classList.contains("toc-open");
+    setTocOpen(willOpen);
+
+    if (willOpen) {
+      document.getElementById("manual").scrollIntoView({ block: "start" });
+      window.setTimeout(focusTocPanel, 180);
+    }
+
+    return;
+  }
+
+  setTocOpen(false);
+  document.querySelector(".sidebar-panel").scrollIntoView({ block: "nearest" });
+  focusTocPanel();
 }
 
 function applySearchFilter() {
@@ -281,8 +317,8 @@ function applySearchFilter() {
   });
 
   tocListEl.querySelectorAll("a").forEach((link) => {
-    const record = blocks.find((block) => block.heading.id === link.dataset.target);
-    link.classList.toggle("is-hidden-by-search", Boolean(term && record && !record.text.includes(term)));
+    const block = blocks.find((item) => item.headingIds.includes(link.dataset.target));
+    link.classList.toggle("is-hidden-by-search", Boolean(term && block && !block.text.includes(term)));
   });
 }
 
@@ -358,6 +394,20 @@ themeToggleEl.addEventListener("click", () => {
   const nextTheme = document.documentElement.classList.contains("theme-dark") ? "light" : "dark";
   setStoredTheme(nextTheme);
   applyTheme(nextTheme);
+});
+
+tocToggleEl.addEventListener("click", handleTocToggle);
+
+tocListEl.addEventListener("click", (event) => {
+  if (event.target.closest("a") && isCompactToc()) {
+    setTocOpen(false);
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (!isCompactToc()) {
+    setTocOpen(false);
+  }
 });
 
 searchInputEl.addEventListener("input", applySearchFilter);
